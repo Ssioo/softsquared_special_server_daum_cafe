@@ -1,6 +1,7 @@
 <?php
 require './pdos/DatabasePdo.php';
 require './pdos/IndexPdo.php';
+require  './pdos/UserPdo.php';
 require './vendor/autoload.php';
 
 use \Monolog\Logger as Logger;
@@ -10,7 +11,7 @@ date_default_timezone_set('Asia/Seoul');
 ini_set('default_charset', 'utf8mb4');
 
 //에러출력하게 하는 코드
-//error_reporting(E_ALL); ini_set("display_errors", 1);
+error_reporting(E_ALL); ini_set("display_errors", 1);
 
 //Main Server API
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
@@ -21,8 +22,13 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('POST', '/test', ['IndexController', 'testPost']);
     $r->addRoute('GET', '/jwt', ['MainController', 'validateJwt']);
     $r->addRoute('POST', '/jwt', ['MainController', 'createJwt']);
-    
 
+    /* User API */
+    $r->addRoute('POST', '/app/signUp', ['UserController', 'signUp']);
+    $r->addRoute('POST', '/app/signIn', ['UserController', 'signIn']);
+    $r->addRoute('GET', '/user/info', ['UserController', 'info']);
+    $r->addRoute('PATCH', '/user/modifyInfo', ['UserController', 'modify']);
+    $r->addRoute('DELETE', '/user/resign', ['UserController', 'resign']);
 
 //    $r->addRoute('GET', '/users', 'get_all_users_handler');
 //    // {id} must be a number (\d+)
@@ -59,7 +65,7 @@ switch ($routeInfo[0]) {
     case FastRoute\Dispatcher::NOT_FOUND:
         // ... 404 Not Found
         echo "404 Not Found";
-        break;
+        break; 
     case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
         $allowedMethods = $routeInfo[1];
         // ... 405 Method Not Allowed
@@ -80,30 +86,11 @@ switch ($routeInfo[0]) {
                 $vars = $routeInfo[2];
                 require './controllers/MainController.php';
                 break;
-            /*case 'EventController':
-                $handler = $routeInfo[1][1]; $vars = $routeInfo[2];
-                require './controllers/EventController.php';
+            case 'UserController':
+                $handler = $routeInfo[1][1];
+                $vars = $routeInfo[2];
+                require './controllers/UserController.php';
                 break;
-            case 'ProductController':
-                $handler = $routeInfo[1][1]; $vars = $routeInfo[2];
-                require './controllers/ProductController.php';
-                break;
-            case 'SearchController':
-                $handler = $routeInfo[1][1]; $vars = $routeInfo[2];
-                require './controllers/SearchController.php';
-                break;
-            case 'ReviewController':
-                $handler = $routeInfo[1][1]; $vars = $routeInfo[2];
-                require './controllers/ReviewController.php';
-                break;
-            case 'ElementController':
-                $handler = $routeInfo[1][1]; $vars = $routeInfo[2];
-                require './controllers/ElementController.php';
-                break;
-            case 'AskFAQController':
-                $handler = $routeInfo[1][1]; $vars = $routeInfo[2];
-                require './controllers/AskFAQController.php';
-                break;*/
         }
 
         break;

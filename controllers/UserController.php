@@ -37,7 +37,13 @@ try {
         case "signIn":
             http_response_code(200);
 
-            $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
+            // JWT 가 헤더에 있는지 검증
+            $jwt = null;
+            foreach (getallheaders() as $name => $value) {
+                if ($name == 'X-Access-Token') {
+                    $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
+                }
+            }
 
             if ($jwt != null) {
                 // jwt로 로그인 시

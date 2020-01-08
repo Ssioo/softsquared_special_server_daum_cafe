@@ -109,9 +109,9 @@ try {
             $res->isSuccess = TRUE;
             $res->code = 200;
             $res->message = "정보조회 성공";
-            $res->userInfo = (Object)Array();
-            $res->userInfo->id = $result["email"];
-            $res->userInfo->name = $result["name"];
+            $userInfo = array("id" => $result["email"],
+                "name" => $result["name"]);
+            $res->userInfo = array($userInfo);
             echo json_encode($res, JSON_NUMERIC_CHECK);
 
             break;

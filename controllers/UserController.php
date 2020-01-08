@@ -36,7 +36,7 @@ try {
          * */
         case "signIn":
             http_response_code(200);
-            
+
             $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
 
             if ($jwt != null) {
@@ -90,7 +90,7 @@ try {
             $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
             $user = isValidHeader($jwt, JWT_SECRET_KEY);
 
-            if ($user) {
+            if (!$user) {
                 $res->isSuccess = FALSE;
                 $res->code = 200;
                 $res->message = "정보조회 실패";
@@ -103,6 +103,7 @@ try {
             $res->isSuccess = TRUE;
             $res->code = 200;
             $res->message = "정보조회 성공";
+            $res->userInfo = (Object)Array();
             $res->userInfo->id = $result["email"];
             $res->userInfo->name = $result["name"];
             echo json_encode($res, JSON_NUMERIC_CHECK);

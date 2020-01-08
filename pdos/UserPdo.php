@@ -62,7 +62,7 @@ function isSuccessSignUp($email, $pw, $name)
 
 function getUserInfo($email) {
     $pdo = pdoSqlConnect();
-    $query = "SELECT * FROM User WHERE email = ?;";
+    $query = "SELECT * FROM user WHERE email = ?;";
 
     $st = $pdo->prepare($query);
     $st->execute([$email]);

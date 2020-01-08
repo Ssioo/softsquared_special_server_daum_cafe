@@ -10,7 +10,17 @@ try {
     addAccessLogs($accessLogs, $req);
     switch ($handler) {
         case "index":
-            echo "API Server";
+            $res->isSuccess = TRUE;
+            $res->code = 200;
+            $res->message = "정보조회 성공";
+            // DUMMY
+            $result1 = array("idboard" => 1, "title" => "Special Server", "contents" => "Dummy", "img" => null, "id" => "sio");
+            $result2 = array("idboard" => 2, "title" => "Special Server", "contents" => "Dummy1", "img" => null, "id" => "sio");
+            $result3 = array("idboard" => 3, "title" => "Special Server", "contents" => "Dummy2", "img" => null, "id" => "sio");
+            $result4 = array("idboard" => 4, "title" => "Special Server", "contents" => "Dummy2", "img" => null, "id" => "sio");
+            $result5 = array("idboard" => 5, "title" => "Special Server", "contents" => "Dummy2", "img" => null, "id" => "sio");
+            $res->result = array($result1, $result2, $result3, $result4, $result5);
+            echo json_encode($res, JSON_NUMERIC_CHECK);
             break;
         case "ACCESS_LOGS":
             //            header('content-type text/html charset=utf-8');

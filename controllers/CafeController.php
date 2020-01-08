@@ -9,53 +9,19 @@ $req = json_decode(file_get_contents("php://input"));
 try {
     addAccessLogs($accessLogs, $req);
     switch ($handler) {
-        case "index":
-            echo "API Server";
-            break;
-        case "ACCESS_LOGS":
-            //            header('content-type text/html charset=utf-8');
-            header('Content-Type: text/html; charset=UTF-8');
-            getLogs("./logs/access.log");
-            break;
-        case "ERROR_LOGS":
-            //            header('content-type text/html charset=utf-8');
-            header('Content-Type: text/html; charset=UTF-8');
-            getLogs("./logs/errors.log");
-            break;
         /*
-         * API No. 0
-         * API Name : 테스트 API
-         * 마지막 수정 날짜 : 19.04.29
+         * API No. 40
+         * API Name : Cafe 리스트 API
+         * 마지막 수정 날짜 : 20.01.09
          */
-        case "test":
+        case "list":
             http_response_code(200);
-            $res->result = test();
-            $res->isSuccess = TRUE;
-            $res->code = 100;
-            $res->message = "테스트 성공";
-            echo json_encode($res, JSON_NUMERIC_CHECK);
-            break;
-        /*
-         * API No. 0
-         * API Name : 테스트 Path Variable API
-         * 마지막 수정 날짜 : 19.04.29
-         */
-        case "testDetail":
-            http_response_code(200);
-            $res->result = testDetail($vars["testNo"]);
-            $res->isSuccess = TRUE;
-            $res->code = 100;
-            $res->message = "테스트 성공";
-            echo json_encode($res, JSON_NUMERIC_CHECK);
-            break;
-        /*
-         * API No. 0
-         * API Name : 테스트 Body & Insert API
-         * 마지막 수정 날짜 : 19.04.29
-         */
-        case "testPost":
-            http_response_code(200);
-            $res->result = testPost($req->name);
+            // DUMMY
+            $cafe1 = array("name" => "special Server");
+            $cafe2 = array("name" => "special Server2");
+            $cafe3 = array("name" => "special Server3");
+            $cafe4 = array("name" => "dummy");
+            $res->result = array($cafe1, $cafe2, $cafe3, $cafe4);
             $res->isSuccess = TRUE;
             $res->code = 100;
             $res->message = "테스트 성공";

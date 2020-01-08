@@ -2,6 +2,7 @@
 require './pdos/DatabasePdo.php';
 require './pdos/IndexPdo.php';
 require  './pdos/UserPdo.php';
+require './pdos/CafePdo.php';
 require './vendor/autoload.php';
 
 use \Monolog\Logger as Logger;
@@ -17,11 +18,11 @@ error_reporting(E_ALL); ini_set("display_errors", 1);
 $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) {
     /* ******************   Test   ****************** */
     $r->addRoute('GET', '/', ['IndexController', 'index']);
-    $r->addRoute('GET', '/test', ['IndexController', 'test']);
-    $r->addRoute('GET', '/test/{testNo}', ['IndexController', 'testDetail']);
-    $r->addRoute('POST', '/test', ['IndexController', 'testPost']);
-    $r->addRoute('GET', '/jwt', ['MainController', 'validateJwt']);
-    $r->addRoute('POST', '/jwt', ['MainController', 'createJwt']);
+    //$r->addRoute('GET', '/test', ['IndexController', 'test']);
+    //$r->addRoute('GET', '/test/{testNo}', ['IndexController', 'testDetail']);
+    //$r->addRoute('POST', '/test', ['IndexController', 'testPost']);
+    //$r->addRoute('GET', '/jwt', ['MainController', 'validateJwt']);
+    //$r->addRoute('POST', '/jwt', ['MainController', 'createJwt']);
 
     /* User API */
     $r->addRoute('POST', '/app/signUp', ['UserController', 'signUp']);
@@ -29,6 +30,9 @@ $dispatcher = FastRoute\simpleDispatcher(function (FastRoute\RouteCollector $r) 
     $r->addRoute('GET', '/user/info', ['UserController', 'info']);
     $r->addRoute('PATCH', '/user/modifyInfo', ['UserController', 'modify']);
     $r->addRoute('DELETE', '/user/resign', ['UserController', 'resign']);
+
+    /* Cafe API */
+    $r->addRoute('GET', '/cafe', ['CafeController', 'list']);
 
 //    $r->addRoute('GET', '/users', 'get_all_users_handler');
 //    // {id} must be a number (\d+)
@@ -90,6 +94,11 @@ switch ($routeInfo[0]) {
                 $handler = $routeInfo[1][1];
                 $vars = $routeInfo[2];
                 require './controllers/UserController.php';
+                break;
+            case 'CafeController':
+                $handler = $routeInfo[1][1];
+                $vars = $routeInfo[2];
+                require './controllers/CafeController.php';
                 break;
         }
 

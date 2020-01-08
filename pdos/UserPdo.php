@@ -21,7 +21,7 @@ function isSuccessSignUp($email, $pw, $name)
 
     /* DB CHECK */
     $pdo = pdoSqlConnect();
-    $query = "SELECT * FROM user WHERE email = ?;";
+    $query = "SELECT * FROM user WHERE email = ? AND status = 'ACTIVE';";
 
     $st = $pdo->prepare($query);
     $st->execute([$email]);
@@ -36,7 +36,7 @@ function isSuccessSignUp($email, $pw, $name)
     $pdo = null;
 
     $pdo = pdoSqlConnect();
-    $query = "SELECT * FROM user WHERE name = ?;";
+    $query = "SELECT * FROM user WHERE name = ? AND status = 'ACTIVE';";
 
     $st = $pdo->prepare($query);
     $st->execute([$name]);
@@ -62,7 +62,7 @@ function isSuccessSignUp($email, $pw, $name)
 
 function getUserInfo($email) {
     $pdo = pdoSqlConnect();
-    $query = "SELECT * FROM user WHERE email = ?;";
+    $query = "SELECT * FROM user WHERE email = ? AND status = 'ACTIVE';";
 
     $st = $pdo->prepare($query);
     $st->execute([$email]);
@@ -70,4 +70,14 @@ function getUserInfo($email) {
     $res = $st->fetchAll();
 
     return $res[0];
+}
+
+function resignUser($email) {
+    $pdo = pdoSqlConnect();
+    $query = "UPDATE user SET status = 'DELETED' WHERE email = ? AND status = 'ACTIVE';";
+
+    $st = $pdo->prepare($query);
+    $st->execute([$email]);
+
+    return TRUE;
 }

@@ -39,10 +39,8 @@ try {
 
             // JWT 가 헤더에 있는지 검증
             $jwt = null;
-            foreach (getallheaders() as $name => $value) {
-                if ($name == 'X-Access-Token') {
-                    $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
-                }
+            if (isset($_SERVER["HTTP_X_ACCESS_TOKEN"])) {
+                $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
             }
 
             if ($jwt != null) {
@@ -112,6 +110,32 @@ try {
             $userInfo = array("id" => $result["email"],
                 "name" => $result["name"]);
             $res->userInfo = array($userInfo);
+            echo json_encode($res, JSON_NUMERIC_CHECK);
+
+            break;
+
+        /*
+         * API No. 4
+         * API Name : 사용자 탈퇴 API
+         * 마지막 수정 날짜 : 20.01.09
+         */
+        case "resign":
+            $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
+            $user = isValidHeader($jwt, JWT_SECRET_KEY);
+
+            if (!$user) {
+                $res->isSuccess = FALSE;
+                $res->code = 403;
+                $res->message = "토큰이 일치하지 않음";
+                echo json_encode($res, JSON_NUMERIC_CHECK);
+                return;
+            }
+
+            resignUser($user[0]);
+
+            $res->isSuccess = TRUE;
+            $res->code = 200;
+            $res->message = "회원탈퇴 성공";
             echo json_encode($res, JSON_NUMERIC_CHECK);
 
             break;

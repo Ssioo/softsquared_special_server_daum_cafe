@@ -37,12 +37,13 @@ try {
         case "signIn":
             http_response_code(200);
 
+            if ()
             $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
 
             if ($jwt != null) {
                 // jwt로 로그인 시
                 $user = isValidHeader($jwt, JWT_SECRET_KEY);
-                if (user) {
+                if (!$user) {
                     $res->isSuccess = FALSE;
                     $res->code = 403;
                     $res->message = "토큰 일치하지 않음";
@@ -60,7 +61,7 @@ try {
             } else {
                 // 최초 로그인
                 $user = isValidUser($req->id, $req->password);
-                if ($user) {
+                if (!$user) {
                     // Body 양식 오류
                     $res->isSuccess = FALSE;
                     $res->code = 301;
@@ -70,12 +71,13 @@ try {
                     return;
                 }
                 $jwt = getJWToken($req->id, $req->password, JWT_SECRET_KEY);
-                $res->jwt = $jwt;
                 $res->isSuccess = TRUE;
                 $res->code = 200;
                 $res->message = "로그인 성공";
-                $res->userInfo->id = user[0];
-                $res->userInfo->name = user[1];
+                $res->jwt = $jwt;
+                $res->userInfo = (Object)Array();
+                $res->userInfo->id = $user[0];
+                $res->userInfo->name = $user[1];
                 echo json_encode($res, JSON_NUMERIC_CHECK);
             }
 

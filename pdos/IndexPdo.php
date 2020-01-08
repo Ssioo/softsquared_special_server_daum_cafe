@@ -66,11 +66,8 @@ function isValidUser($email, $pw)
     $st = null;
     $pdo = null;
     if (count($res) != 1) {
-        return TRUE;
+        return FALSE;
     }
-
-    console.log($email);
-    console.log($res[0]["name"]);
 
     return [$email, $res[0]["name"]];
 

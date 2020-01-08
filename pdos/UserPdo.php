@@ -21,14 +21,14 @@ function isSuccessSignUp($email, $pw, $name)
 
     /* DB CHECK */
     $pdo = pdoSqlConnect();
-    $query = "SELECT EXISTS(SELECT * FROM User WHERE email = ?) AS exist;";
+    $query = "SELECT * FROM user WHERE email = ?;";
 
     $st = $pdo->prepare($query);
     $st->execute([$email]);
     $st->setFetchMode(PDO::FETCH_ASSOC);
     $res = $st->fetchAll();
 
-    if (intval($res[0]["exist"]) != 0) {
+    if (count($res) != 0) {
         return 308;
     }
 
@@ -36,14 +36,14 @@ function isSuccessSignUp($email, $pw, $name)
     $pdo = null;
 
     $pdo = pdoSqlConnect();
-    $query = "SELECT EXISTS(SELECT * FROM User WHERE name = ?) AS exist;";
+    $query = "SELECT * FROM user WHERE name = ?;";
 
     $st = $pdo->prepare($query);
     $st->execute([$name]);
     $st->setFetchMode(PDO::FETCH_ASSOC);
     $res = $st->fetchAll();
 
-    if (intval($res[0]["exist"]) != 0) {
+    if (count($res) != 0) {
         return 309;
     }
 
@@ -55,9 +55,7 @@ function isSuccessSignUp($email, $pw, $name)
     $query = "INSERT INTO user (email, password, name, status) value (?, ?, ?, DEFAULT);";
 
     $st = $pdo->prepare($query);
-    $st->execute([$name]);
-    $st->setFetchMode(PDO::FETCH_ASSOC);
-    $st->fetchAll();
+    $st->execute([$email, $pw, $name]);
 
     return 200;
 }

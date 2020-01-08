@@ -36,8 +36,7 @@ try {
          * */
         case "signIn":
             http_response_code(200);
-
-            if ()
+            
             $jwt = $_SERVER["HTTP_X_ACCESS_TOKEN"];
 
             if ($jwt != null) {
